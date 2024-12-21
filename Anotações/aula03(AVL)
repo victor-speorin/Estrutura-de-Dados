@@ -1,0 +1,91 @@
+AVL é uma ABB Balanceada (ABBB), onde esse balanceamento ocorre com
+base no conceito de altura.
+
+Para todos os nós, a diferença de altura das sub-arvores esq e dir
+pertencem ao intervalo [-1,1]
+
+Fator de balanceamento (FB):
+FB(a) = altura(a->esq) - altura(a->dir)
+FB(a) = níveis a esquerda - níveis a direita
+
+typedef struct avl{
+    int info;
+    struct avl *esq, *dir;
+    int alt;
+}
+
+iguais a ABB: busca, libera, impressão, criação, inicialização
+diferentes: inserção e retirada.
+
+Rotações em AVL:
+1- Rotação simples à esq (RSE)
+
+TAVL *RSE(TAVL *p){
+    TAVL *novo = p->dir;
+    p->dir = novo->esq;
+    novo->esq=p;
+    altura
+    return novo;
+}
+
+2- Rotação simples à dir (RSD)
+
+TAVL *RSD(TAVL *p){
+    TAVL *novo = p->esq;
+    p->esq = novo->dir;
+    novo->dir=p;
+    altura
+    return novo;
+}
+
+3- Rotação esq dir (RED)
+
+TAVL *RED(TAVL *p){
+    p->esq = RSE(p->esq);
+    p = RSD(p);
+    return p;
+}
+
+4- Rotação dir esq (RDE)
+
+TAVL *RDE(TAVL *p){
+    p->dir = RSD(p->dir);
+    p = RSE(p);
+    return p;
+}
+
+Quando fazer cada rotação:
+RSE(p):
+FB(p) = -2
+FB(D) <= 0 / x > a->dir->info
+
+RSD(P):
+FB(P) = 2
+FB(E) >= 0 / x < a->esq->info
+
+RDE(P):
+FB(P) = -2
+FB(D) > 0 / x < a->dir->info
+
+RED(P):
+FB(P) = 2
+FB(E) < 0 / x > a->esq->info
+
+TAVL *TAVL_insere(TAVL *a, int x){
+    if (!a) return TAVL_cria(x,NULL,NULL):
+    if (a->info < x){
+        a->dir = TAVL_insere(a->dir,x);
+        if (FB(a) == -2){
+            if (x > a->dir->info) a = RSE(a);
+            else a = RDE(a);
+    }
+    else if (a->info > x){
+        a->esq = TAVL_insere(a->esq,x);
+        if (FB(a) == 2){
+            if (x < a->esq->info) a = RSD(a);
+            else a = RED(a);
+        }
+    }
+
+    return a;
+}

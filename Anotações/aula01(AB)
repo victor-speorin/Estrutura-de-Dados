@@ -1,0 +1,81 @@
+Estrutura:
+typedef struct arvbin{
+    int info;
+    struct arvbin *esq, *dir;
+}TAB;
+
+Funções:
+TAB * TAB_inicializa(void){
+    return NULL;
+}
+
+TAB * TAB_cria (int raiz, TAB *e, TAB *d){
+    TAB *novo = (TAB*)malloc(sizeof(TAB));
+    novo->info=raiz;
+    novo->esq=e;
+    novo->dir=d;
+    return novo;
+}
+
+TAB * vet2ab (int *vet, int n){
+    if (n<=0) return NULL;
+    return TAB_cria(vet[n/2], vet2ab(vet,n/2), vet2ab(&vet[n/2 + 1], n - n/2 - 1));
+}
+
+void TAB_imp_pre(TAB *a){ // pre ordem
+    if (a){
+        printf("%d ",a->info);
+        TAB_imp_pre(a->esq);
+        TAB_imp_pre(a->dir);
+    }
+}
+
+void TAB_imp_pre_it(TAB *a){
+    if (!a) return;
+    TP *p = TP_cria();
+    TP_push(p,a);
+    while(!TP_vazia(p)){
+        TAB *aux = TP_pop(p);
+        printf("%d ", aux->info);
+        if (aux->dir) TP_push(p,aux->dir);
+        if (aux->esq) TP_push(p,aux->esq);
+    }
+    TP_libera(p);
+}
+
+void TAB_imp_sim(TAB *a){ // simetrica
+    if(a){
+        TAB_imp_sim(a->esq);
+        printf("%d ",a->info);
+        TAB_imp_sim(a->dir);
+    }
+}
+
+void TAB_imp_pos(TAB *a){ // pos ordem
+    if(a){
+        TAB_imp_pos(a->esq);
+        TAB_imp_pos(a->dir);
+        printf("%d ",a->info);
+    }
+}
+
+void TAB_imp_pre_Larg(TAB *a){
+    if (!a) return;
+    TF *f = TF_cria();
+    TF_insere(f,a);
+    while(!TF_vazia(f)){
+        TAB *aux = TF_retira(f);
+        printf("%d ", aux->info);
+        if (aux->esq) TF_insere(f,aux->esq);
+        if (aux->dir) TF_insere(f,aux->dir);
+    }
+    TF_libera(f);
+}
+
+void TAB_libera(TAB *a){
+    if(a){
+        TAB_libera(a->esq);
+        TAB_libera(a->dir);
+        free(a);
+    }
+}

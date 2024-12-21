@@ -1,0 +1,20 @@
+Tipos:
+
+Binários:
+    - armazenam informações usando o sistema de numeração
+    - menor unidade de leitura: registro
+    - registros são escritos/recuperados como representados em memória
+    - registros dispostos de maneira sequencial, mas podem ser acessados de maneira aleatória
+    - exemplos:
+
+
+Manipulação:
+1 - Abertura
+2 - Processamento
+3 - Fechamento
+
+fclose(*fp) = 0 -> tudo certo
+fscanf(*fp,formato (%d,%c,%s,...), <lista endereços variaveis>)
+fprintf(*fp,formato,<variaveis>)
+
+fseek(fp,0l,seek_end)
