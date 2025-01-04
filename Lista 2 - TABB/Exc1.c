@@ -39,8 +39,6 @@ int main(){
                 copy = maior(raiz);
                 printf("\n%d\n", copy->info);
                 break;
-
-
             default:
                 if(opcao != 0) printf("Opcao invalida!!!\n");
                 break;
