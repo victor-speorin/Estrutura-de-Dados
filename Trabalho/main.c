@@ -9,7 +9,7 @@ void limpar_buffer(){
 int main(void){
     TR aux, aux2;
     int t, opcao, op2;
-    long int id;
+    long long int id;
     int cont = 1;
     char * raiz = (char*)malloc(sizeof(char)*30);
     printf("Insira o valor de t para a construcao da arvore: ");
@@ -265,15 +265,28 @@ int main(void){
 
             case 5:
                 printf("\n\tdigite o id do imovel que voce quer receber informacoes adicionais: ");
-                scanf("%ld", &id);
-                procuraqto(id,t,raiz);
-                procuravaga(id,t,raiz);
-                procurabanheiro(id,t,raiz);
-                procuraamb(id,t,raiz);
-                procuradorm(id,t,raiz);
-                procurametro(id,t,raiz);
-                procurap24(id,t,raiz);
-                procurasuite(id,t,raiz);
+                scanf("%lld", &id);
+                char id_str[20];
+                char new_str[20];
+                long int idnovo;
+                sprintf(id_str, "%lld", id);
+                strcpy(new_str, id_str + 1);
+                id = atol(new_str);
+                idnovo = (long int) id;
+                if (!TABM_busca(raiz,idnovo,t)){
+                    printf("\t\nesse id nao esta na arvore\n");
+                    break;
+                }
+                procuraqto(idnovo,t,raiz);
+                procuravaga(idnovo,t,raiz);
+                procurabanheiro(idnovo,t,raiz);
+                procuraamb(idnovo,t,raiz);
+                procuradorm(idnovo,t,raiz);
+                procurametro(idnovo,t,raiz);
+                procurap24(idnovo,t,raiz);
+                procurasuite(idnovo,t,raiz);
+                procurandar(idnovo,t,raiz);
+                procuracorretora(idnovo,t,raiz);
                 break;
 
             default:

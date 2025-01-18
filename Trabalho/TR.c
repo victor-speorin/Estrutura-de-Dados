@@ -1138,6 +1138,29 @@ void procurasuite (long int id,int t,char *arq){
     }
 }
 
+void procurandar (long int id,int t,char *arq){
+    char *aux = TABM_busca(arq,id,t), *resp = NULL;
+    TABM *x = arq2TABM(aux,t);
+    int i;
+    for (i=0;i<x->nchaves;i++) if (x->chaves[i].id == id) break;
+    TR aux2 = x->chaves[i];
+    if (strstr(aux2.descricao,"andares")){
+        resp = strstr(aux2.descricao,"andares");
+    }
+    else if (strstr(aux2.descricao,"Andares")){
+        resp = strstr(aux2.descricao,"Andares");
+    }
+    else if (strstr(aux2.descricao,"ANDARES")){
+        resp = strstr(aux2.descricao,"ANDARES");
+    }
+    char *respajustada = NULL;
+    if (resp) {
+        respajustada = resp - 2;
+        int y = atoi(respajustada);
+        if (y) printf("\n\ta residencia de id %ld tem %d andare(s)", id, y);
+    }
+}
+
 void procuraamb (long int id,int t,char *arq){
     char *aux = TABM_busca(arq,id,t), *resp = NULL;
     TABM *x = arq2TABM(aux,t);
@@ -1206,6 +1229,47 @@ void procurap24 (long int id,int t,char *arq){
         printf("\n\ta residencia de id %ld tem portaria 24 horas", id);
     }
 }
+
+
+void procuracorretora (long int id,int t,char *arq){
+    char *aux = TABM_busca(arq,id,t), *resp = NULL;
+    TABM *x = arq2TABM(aux,t);
+    int i;
+    for (i=0;i<x->nchaves;i++) if (x->chaves[i].id == id) break;
+    TR aux2 = x->chaves[i];
+    if (strstr(aux2.descricao,"Imóveis")){
+        resp = strstr(aux2.descricao,"Imóveis");
+    }
+    else if (strstr(aux2.descricao,"IMÓVEIS")){
+        resp = strstr(aux2.descricao,"IMÓVEIS");
+    }
+    else if (strstr(aux2.descricao,"imóveis")){
+        resp = strstr(aux2.descricao,"imóveis");
+    }
+    if (resp) {
+        // Retroceder até encontrar o espaço ou o início da string
+        char *respajustada = resp - 2;  // Retrocede duas casas antes de "Imóveis"
+
+        // Garantir que não ultrapasse os limites da string
+        while (respajustada >= aux2.descricao && *respajustada != ' ') {
+            respajustada--;
+        }
+
+        // Imprimir a corretora (assumindo que o nome da corretora seja a palavra antes de "Imóveis")
+        if (respajustada >= aux2.descricao) {
+            // Agora, respajustada aponta para o espaço ou o início da string
+            printf("\n\tO imovel de id %ld esta sendo vendido/alugado pela corretora ", aux2.id);
+            // Imprimir o nome da corretora
+            char *start = respajustada + 1;
+            while (start < resp && *start != ' ' && *start != '\0') {
+                putchar(*start);
+                start++;
+            }
+            putchar('\n');
+        }
+    }
+}
+
 
 void procuravenda (int t,char *arq){
     TLSE_TR *resp = NULL;
