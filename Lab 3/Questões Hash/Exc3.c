@@ -10,6 +10,10 @@
 
 (c) união de conjuntos: void uniao(char* arq1, char* arq2, char* saida);
 
+(d)  Elimine as repetições de números em um arquivo usando hashing
+     e sem copiar TODOS os elementos para a memória principal:
+     void elim_repet (char *repet, char *novo)
+
 */
 
 #include "TH.c"
@@ -69,7 +73,6 @@ void dif_sim(char* arq1, char* arq2, char* saida){
                     fprintf(fs, "%d\n", aux.num);
                     fclose(fs);
                 }
-
             }
             fclose(dados);
         }
@@ -122,7 +125,44 @@ void uniao(char* arq1, char* arq2, char* saida) {
     fclose(hash);
 }
 
+
+//// QUESTÃO 4 ////
+void elim_repet (char *repet, char *novo){
+    FILE *fp = fopen(repet,"r");
+    if (!fp) exit(1);
+    int tam, tmp, i = 0;
+    printf("Qual o tamanho da hash? ");
+    scanf("%d", &tam);
+    TH_inicializa("HashA.bin", tam);
+    while (fscanf(fp,"%d",&tmp)==1) TH_insere("HashA.bin","dadosA.bin",tam,tmp);
+    FILE *hash = fopen("HashA.bin","rb");
+    while (i<tam){
+        TNUM aux;
+        int end;
+        fread(&end,sizeof (int),1,hash);
+        if (end != -1){
+            FILE *dados = fopen("dadosA.bin","rb");
+            fseek(dados,end,SEEK_SET);
+            fread(&aux, sizeof(TNUM),1,dados);
+            FILE *fs = fopen(novo,"at");
+            fprintf(fs,"%d\n",aux.num);
+            fclose(fs);
+            while (aux.prox != -1){
+                fseek(dados,aux.prox,SEEK_SET);
+                fread(&aux, sizeof(TNUM),1,dados);
+                FILE *fs = fopen(novo,"at");
+                fprintf(fs,"%d\n",aux.num);
+                fclose(fs);
+            }
+            fclose(dados);
+        }
+        i++;
+    }
+    fclose(hash);
+    fclose(fp);
+}
+
 int main(){
-    uniao("Arq1.txt", "Arq2.txt", "ArqSaida.txt");
+    elim_repet("Arq1.txt", "ArqSaida.txt");
     return 0;
 }

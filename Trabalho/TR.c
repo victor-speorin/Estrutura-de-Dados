@@ -1,4 +1,6 @@
 #include "TR.h"
+#include "math.h"
+#define R 6371
 
 void substituir_virgula_por_ponto(char *str) {
     for (int i = 0; str[i] != '\0'; i++) {
@@ -452,6 +454,7 @@ char *remocao(char *no, long id, int t){
                     TABM_escreve(no, a, t);
                 }
                 else fclose(fpaux);
+                return no;
             }
         }
         if (z.nchaves == 0) {
@@ -547,7 +550,15 @@ char *remocao(char *no, long id, int t){
             }
         }
     }
+    strcpy(a->filhos[i], remocao(a->filhos[i], id, t));
+    FILE *aux = fopen(a->filhos[i], "rb");
+    if(!aux){
+        strcpy(a->filhos[i], "NULL");
+        TABM_escreve(no, a, t);
+    } else fclose(aux);
+    return no;
 }
+
 
 void le_dados(char * arquivo, char ** raiz, int t, int* cont){
     FILE * fp = fopen(arquivo, "r");
@@ -1369,4 +1380,24 @@ void procuraaluga (int t,char *arq){
         y = y->prox;
     }
     printf("\n\to imovel alugando mais barato eh o de id %ld, localizado no bairro %s, rua %s e numero %d, e vale %.2f reais, com um metro quadrado no valor de %.2f.",z->info->id,z->info->bairro,z->info->rua,z->info->numero,z->info->preco_total, z->info->preco_m2);
+}
+
+double Radianos(double g) {
+    return g * (M_PI / 180);
+}
+
+void Distancia(double lat1, double lon1, double lat2, double lon2) {
+    double dLat = Radianos(lat2 - lat1);
+    double dLon = Radianos(lon2 - lon1);
+
+    lat1 = Radianos(lat1);
+    lat2 = Radianos(lat2);
+
+    double a = sin(dLat / 2) * sin(dLat / 2) +
+               cos(lat1) * cos(lat2) *
+               sin(dLon / 2) * sin(dLon / 2);
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+    double d = R * c; // Distance in kilometers
+    printf("sao %.2lf kms", d);
 }

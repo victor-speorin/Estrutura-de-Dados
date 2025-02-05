@@ -7,6 +7,7 @@ void limpar_buffer(){
 }
 
 int main(void){
+    double lat1, lon1;
     TR aux, aux2;
     int t, opcao, op2;
     long long int id;
@@ -19,7 +20,7 @@ int main(void){
     TABM_imprime(&raiz, t);
     //contachaves(raiz, t);
     do{
-        printf("\n\t0 - Sair\n\t1 - Retornar imoveis\n\t2 - Retirar imoveis\n\t3 - Inserir imoveis\n\t4 - Alterar imoveis\n\t5 - Retornar infomacoes adicionais\n");
+        printf("\n\t0 - Sair\n\t1 - Retornar imoveis\n\t2 - Retirar imoveis\n\t3 - Inserir imoveis\n\t4 - Alterar imoveis\n\t5 - Retornar infomacoes adicionais\n\t6 - Retornar quantos km de distancia esta da PV\t");
         printf("\n");
         printf("\tDigite uma das opcoes acima: ");
         scanf("%d", &opcao);
@@ -287,6 +288,16 @@ int main(void){
                 procurasuite(idnovo,t,raiz);
                 procurandar(idnovo,t,raiz);
                 procuracorretora(idnovo,t,raiz);
+                break;
+
+            case 6:
+                printf("Digite a latitude e longitude do ponto 1: ");
+                scanf("%lf %lf", &lat1, &lon1);
+                double latuff = -22.90591;
+                double louff = -43.13630;
+                printf("Latitude 1: %lf, Longitude 1: %lf\n", lat1, lon1);
+
+                Distancia(latuff,louff,lat1,lon1);
                 break;
 
             default:
